@@ -32,7 +32,7 @@ func (r *Rpc) Exec(req *Request) *Response {
 		return NewErrResponse(req.ID, err)
 	}
 
-	result, err := (*callback)(req.Params)
+	result, err := callback(req.Params)
 
 	if err != nil {
 		return NewErrResponse(req.ID, err)
@@ -46,12 +46,12 @@ func (r *Rpc) Exec(req *Request) *Response {
 	}
 }
 
-func (r *Rpc) getMethod(req *Request) (*Callback, Error) {
+func (r *Rpc) getMethod(req *Request) (Callback, Error) {
 	stack := strings.Split(req.Method, defaultNsSep)
 	return findMethod(r.Namespace, stack)
 }
 
-func findMethod(ns Namespace, stack []string) (*Callback, Error) {
+func findMethod(ns Namespace, stack []string) (Callback, Error) {
 	if len(stack) == 0 {
 		return nil, NewMethodNotFoundError("", nil)
 	}

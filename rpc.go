@@ -47,7 +47,7 @@ func (r *Rpc) Exec(req *Request) *Response {
 }
 
 func (r *Rpc) getMethod(req *Request) (Callback, Error) {
-	stack := strings.Split(req.Method, defaultNsSep)
+	stack := strings.Split(req.Method, r.NsSep)
 	return findMethod(r.Namespace, stack)
 }
 
